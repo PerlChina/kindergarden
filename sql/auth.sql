@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `user_auth` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `raw_data` text,
   PRIMARY KEY (`type_id`,`identification`)
-);
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
