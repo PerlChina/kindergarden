@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use parent qw(Text::Xslate::Bridge);
 
-use Gravatar::URL;
+use Gravatar::URL 'gravatar_url';
 
 my %funtion_methods = (
     gravatar_url => \&gravatar_url,

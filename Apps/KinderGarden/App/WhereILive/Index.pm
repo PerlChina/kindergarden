@@ -4,6 +4,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use KinderGarden::Basic;
 use HTML::TagCloud;
 use Text::Xslate qw(mark_raw html_escape);
+use KinderGarden::User;
 
 sub index {
     my $c = shift;
@@ -72,11 +73,9 @@ sub place {
     my @users;
     my $sth = $dbh->prepare("SELECT user_id FROM app_wil_user_place WHERE place_id = ? ORDER BY inserted_at DESC");
     $sth->execute($pid);
-    my $user_sth = $dbh->prepare("SELECT * FROM user WHERE id = ?"); # package pm later
     while (my ($user_id) = $sth->fetchrow_array) {
-        $user_sth->execute($user_id);
-        my $user = $user_sth->fetchrow_hashref;
-        push @users, $user if $user;
+        my $user = KinderGarden::User->new( id => $user_id );
+        push @users, $user unless $user->not_found;
     }
     
     $c->render(template_name => 'place.tt', handler => 'tt', place => $place, users => \@users);

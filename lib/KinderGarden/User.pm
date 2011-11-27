@@ -10,7 +10,7 @@ use vars qw/@fields/;
 has 'dbh' => ( is => 'rw', lazy_build => 1 );
 sub _build_dbh { KinderGarden::Basic->dbh }
 
-has @fields => ( is => 'rw', isa => 'Str' );
+has [@fields] => ( is => 'rw', isa => 'Str' );
 has 'not_found' => ( is => 'rw', isa => 'Bool' );
 
 sub BUILD {
@@ -39,6 +39,13 @@ sub BUILD {
         next unless grep { $fld eq $_ } @fields;
         $self->$fld($user->{$fld});
     }
+}
+
+use Gravatar::URL 'gravatar_url';
+has 'gravatar' => ( is => 'rw', isa => 'Str', lazy_build => 1 );
+sub _build_gravatar {
+    my $self = shift;
+    return gravatar_url(email => $self->email);
 }
 
 no Moose;

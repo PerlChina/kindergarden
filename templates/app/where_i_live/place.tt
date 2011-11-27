@@ -7,6 +7,6 @@
 
 <ul>
 [% FOREACH u IN users %]
-<li><img src='[% gravatar_url( email => u.email, size => 30) %]' /> [% u.name %]</li>
+<li><img src='[% u.gravatar %]?s=30' /> [% u.name %]</li>
 [% END %]
 </ul>
