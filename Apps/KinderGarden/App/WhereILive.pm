@@ -8,7 +8,11 @@ use MojoX::Renderer::Xslate;
 sub startup {
     my $self = shift;
 
+    my $root   = KinderGarden::Basic->root;
+    my $config = KinderGarden::Basic->config;
+    
     $self->secret('K1nderG@rden');
+    $self->static->root("$root/static");
 
     # Routes
     my $r = $self->routes;
@@ -17,8 +21,7 @@ sub startup {
     $r->route('/')->to('index#index');
     $r->route('/place/:id', id => qr/[\w\-]+/)->to('index#place');
 
-    my $root   = KinderGarden::Basic->root;
-    my $config = KinderGarden::Basic->config;
+    # Xslate Template
     my $template_options = $config->{xslate};
     $template_options->{path} = [ "$root/templates/app/where_i_live", "$root/templates" ];
     my $xslate = MojoX::Renderer::Xslate->build(
