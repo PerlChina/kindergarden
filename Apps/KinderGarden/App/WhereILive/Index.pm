@@ -3,7 +3,7 @@ package KinderGarden::App::WhereILive::Index;
 use Mojo::Base 'Mojolicious::Controller';
 use KinderGarden::Basic;
 use HTML::TagCloud;
-use Text::Xslate qw(mark_raw);
+use Text::Xslate qw(mark_raw html_escape);
 
 sub index {
     my $c = shift;
@@ -17,7 +17,7 @@ sub index {
         if (defined $place and length $place) {
             my ($place_id) = $dbh->selectrow_array("SELECT id FROM app_wil_place WHERE text = ?", undef, $place);
             unless ($place_id) {
-                $dbh->do("INSERT INTO app_wil_place (type_id, text) VALUES (1, ?)", undef, $place) or die $dbh->errstr;
+                $dbh->do("INSERT INTO app_wil_place (type_id, text) VALUES (1, ?)", undef, html_escape($place)) or die $dbh->errstr;
                 $place_id = $dbh->{'mysql_insertid'};
             }
             $dbh->do("INSERT IGNORE INTO app_wil_user_place (user_id, place_id, inserted_at) VALUES (?, ?, ?)", undef, $user->{id}, $place_id, time());
