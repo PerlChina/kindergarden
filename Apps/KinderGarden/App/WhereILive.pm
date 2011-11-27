@@ -29,6 +29,9 @@ sub startup {
         template_options => $template_options
     );
     $self->renderer->add_handler(tt => $xslate);
+    # remove those we don't need (MAYBE remove_handler should be introduced!)
+    delete $self->renderer->handlers->{ep};
+    delete $self->renderer->handlers->{epl};
     
     # Session user from PSGI OAuth
     $self->hook(around_dispatch => sub {
