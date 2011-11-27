@@ -1,0 +1,12 @@
+<div class="page-header">
+    <ul class="breadcrumb">
+      <li><a href="[% c.url_for('/') %]">Where I Live?</a> <span class="divider">/</span></li>
+      <li class="active">[% place %]</li>
+    </ul>
+</div>
+
+<ul>
+[% FOREACH u IN users %]
+<li><img src='[% gravatar_url( email => u.email, size => 30) %]' /> [% u.name %]</li>
+[% END %]
+</ul>

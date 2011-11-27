@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>KinderGarden</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+  </head>
+
+  <body>
+
+    <div class="topbar" data-scrollspy="scrollspy">
+      <div class="topbar-inner">
+        <div class="container">
+          <a class="brand" href="/">KinderGarden</a>
+          <ul class="nav">
+            [% IF user %]
+            <li><a href='/app/whereilive'>Where I Live?</a></li>
+            [% END %]
+          </ul>
+          <ul class="nav secondary-nav">
+            [% IF user %]
+            <li><a>Welcome, [% user.name %]</a></li>
+            <li><a href='/logout'>Logout</a></li>
+            [% ELSE %]
+            <li><a href="#login" data-controls-modal="modal-login" data-backdrop="true" data-keyboard="true" id="a-login">Login</a></li>
+            [% END %]
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container" style="margin-top: 60px">
+    
+    <div id="alert_success" class="alert-message success hide"></div>
+    <div id="alert_error" class="alert-message error hide"></div>
+    
+    <noscript>
+      <div class="alert-message error">
+        <p><strong>Oh snap!</strong> Please enable your JavaScript</p>
+      </div>
+    </noscript>
+
+    <div id='content'>
+    
+    

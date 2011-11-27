@@ -1,0 +1,18 @@
+DBI:
+  - "DBI:mysql:database=kindergarden:mysql_enable_utf8=1"
+  - "xxx"
+  - "yyy"
+  -
+    AutoCommit: 1
+    PrintError: 1
+    RaiseError: 1
+
+xslate:
+  syntax: 'TTerse'
+  suffix: 'tt'
+  header:
+    - 'layout/header.tt'
+  footer:
+    - 'layout/footer.tt'
+  module:
+    - KinderGardenX::Text::Xslate::Bridge::KinderGarden

@@ -1,0 +1,32 @@
+<div class="page-header">
+<h2>Where I live?</h2>
+</div>
+
+[% IF user %]
+<div class="row">
+<div class="span8">
+<form method="POST">
+    <fieldset>
+      <legend>Where are you living right now?</legend>
+      <div class="clearfix">
+        <label for="place">Country? City?</label>
+        <div class="input">
+          <input class="xlarge" id="place" name="place" size="30" type="text" />
+        </div>
+      </div>
+    </fieldset>
+    <div class="actions">
+      <button type="submit" class="btn primary">Save changes</button>&nbsp;<button type="reset" class="btn">Cancel</button>
+    </div>
+</form>
+</div>
+</div>
+[% END %]
+
+<h3>Cloud</h3>
+
+<div class="row">
+<div class="span8">
+[% cloud %]
+</div>
+</div>

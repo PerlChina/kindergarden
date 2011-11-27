@@ -1,0 +1,18 @@
+appname: "KinderGarden::Web"
+layout: ""
+charset: "UTF-8"
+template: xslate
+engines:
+  xslate:
+    syntax: 'TTerse'
+    suffix: 'tt'
+    header:
+      - 'layout/header.tt'
+    footer:
+      - 'layout/footer.tt'
+    module:
+      - KinderGardenX::Text::Xslate::Bridge::KinderGarden
+session: PSGI
+logger: PSGI
+route_cache: 1
+show_errors: 1
