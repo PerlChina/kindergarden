@@ -25,7 +25,8 @@ sub startup {
     my $template_options = $config->{xslate};
     $template_options->{path} = [ "$root/templates/app/where_i_live", "$root/templates" ];
     my $xslate = MojoX::Renderer::Xslate->build(
-        mojo             => $self,
+        # Don't pass mojo so that cachedir goes to tmpdir
+        # mojo => $self,
         template_options => $template_options
     );
     $self->renderer->add_handler(tt => $xslate);
