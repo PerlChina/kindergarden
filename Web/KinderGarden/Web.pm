@@ -27,9 +27,10 @@ get '/auth' => sub {
         my ($user_id) = $dbh->selectrow_array("SELECT user_id FROM user_auth WHERE type_id = ? AND identification = ?", undef, $user_auth_type{$auth_provider}, $user->{id});
 
         if ($user_id) {
+            $dbh->do("UPDATE user SET visited_at = ? WHERE user_id = ?", undef, time(), $user_id);
             $dbh->do("UPDATE user_auth SET raw_data = ? WHERE type_id = ? AND identification = ?", undef, to_json($user), $user_auth_type{$auth_provider}, $user->{id});
         } else {
-            $dbh->do("INSERT INTO user (name, email, visited_at) VALUES (?, ?, ?)", undef, $user->{name}, $user->{email}, time());
+            $dbh->do("INSERT INTO user (name, email, signed_at, visited_at) VALUES (?, ?, ?, ?)", undef, $user->{name}, $user->{email}, time(), time());
             $user_id = $dbh->{'mysql_insertid'};
             $dbh->do("INSERT INTO user_auth (type_id, identification, user_id, raw_data) VALUES (?, ?, ?, ?)", undef, $user_auth_type{$auth_provider}, $user->{id}, $user_id, to_json($user));
         }
