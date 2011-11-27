@@ -10,9 +10,9 @@ sub index {
 
     my $user = $c->stash->{user};
     my $dbh  = KinderGarden::Basic->dbh;
-  
-    ## if on POST
+
     if ($user) {
+        ## if on POST
         my $place = $c->param('place');
         if (defined $place and length $place) {
             my ($place_id) = $dbh->selectrow_array("SELECT id FROM app_wil_place WHERE text = ?", undef, $place);
@@ -23,6 +23,21 @@ sub index {
             $dbh->do("INSERT IGNORE INTO app_wil_user_place (user_id, place_id, inserted_at) VALUES (?, ?, ?)", undef, $user->{id}, $place_id, time());
             $c->stash->{success} = 'Well Done!';
         }
+
+        ## get my places
+        my $places = $dbh->selectall_arrayref("SELECT place_id, p.text FROM app_wil_user_place u JOIN app_wil_place p ON u.place_id=p.id WHERE u.user_id = ?", { Slice => {} }, $user->{id});
+        my @place_ids = $c->param('place_id');
+        if (@place_ids) {
+            my %stay = map { $_ => 1 } @place_ids;
+            foreach (@$places) {
+                my $pid = $_->{place_id};
+                next if $stay{$pid};
+                $dbh->do("DELETE FROM app_wil_user_place WHERE user_id = ? AND place_id = ?", undef, $user->{id}, $pid);
+                undef $_;
+            }
+            $places = [ grep { defined $_ } @$places ];
+        }
+        $c->stash->{user_places} = $places;
     }
     
     # Tag Cloud

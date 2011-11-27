@@ -14,6 +14,19 @@
           <input class="xlarge" id="place" name="place" size="30" type="text" />
         </div>
       </div>
+      [% IF user_places.size() %]
+      <div class="clearfix">
+        <label>I'm living at:</label>
+        <div class="input">
+          [% FOREACH up IN user_places %]
+            <div class="input-prepend clearfix">
+            <label class="add-on"><input type="checkbox" name="place_id" value="[% up.place_id %]" checked="checked" /></label>
+            <input size="16" class="mini" value="[% up.text %]" readonly="readonly" />
+            </div>
+          [% END %]
+        </div>
+      </div>
+      [% END %]
     </fieldset>
     <div class="actions">
       <button type="submit" class="btn primary">Save changes</button>&nbsp;<button type="reset" class="btn">Cancel</button>
