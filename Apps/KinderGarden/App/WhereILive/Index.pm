@@ -21,8 +21,8 @@ sub index {
                 $place_id = $dbh->{'mysql_insertid'};
             }
             $dbh->do("INSERT IGNORE INTO app_wil_user_place (user_id, place_id, inserted_at) VALUES (?, ?, ?)", undef, $user->{id}, $place_id, time());
+            $c->stash->{success} = 'Well Done!';
         }
-        $c->stash->{success} = 'Well Done!';
     }
     
     # Tag Cloud
