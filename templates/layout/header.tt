@@ -39,8 +39,10 @@
     
     <div class="container" style="margin-top: 60px">
     
-    <div id="alert_success" class="alert-message success hide"></div>
-    <div id="alert_error" class="alert-message error hide"></div>
+    [% IF success %]<div id="alert_success" class="alert-message success">[% success %]</div>[% END %]
+    [% IF error %]<div id="alert_error" class="alert-message error">[% error %]</div>[% END %]
+    [% IF info %]<div id="alert_error" class="alert-message info">[% info %]</div>[% END %]
+    [% IF warning %]<div id="alert_error" class="alert-message warning">[% warning %]</div>[% END %]
     
     <noscript>
       <div class="alert-message error">
