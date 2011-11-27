@@ -8,7 +8,8 @@ use KinderGarden::Basic;
 use KinderGarden::BitMap qw/%user_auth_type/;
 
 # different template dir than default one
-setting 'views' => path( KinderGarden::Basic->root, 'templates' );
+setting 'views'  => path( KinderGarden::Basic->root, 'templates' );
+setting 'public' => path( KinderGarden::Basic->root, 'static' );
 
 get '/' => sub {
     my $user = session '__user';

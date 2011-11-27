@@ -83,7 +83,8 @@ builder {
         Dancer::Config->load;
         
         # damn, how many fixes should I write it here!
-        setting 'views' => "$root/templates";
+        setting 'views'  => "$root/templates";
+        setting 'public' => "$root/static";
         
         my $request = Dancer::Request->new( env => $env );
         Dancer->dance($request);
