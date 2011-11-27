@@ -5,6 +5,7 @@ use warnings;
 use FindBin qw/$Bin/;
 use Plack;
 use Plack::Builder;
+use Plack::App::File;
 use Plack::Session::Store::Cache;
 use CHI;
 
@@ -30,6 +31,9 @@ builder {
     enable 'Session', store => Plack::Session::Store::Cache->new(
         cache => CHI->new(driver => 'FastMmap')
     );
+    
+    mount '/static/' => Plack::App::File->new( root => "$root/static" ),
+    mount '/favicon.ico' =>  Plack::App::File->new( file => "$root/static/favicon.ico" ),
     
     my $oauth_provider_yml = -e "$root/conf/oauth_local.yml" ? "$root/conf/oauth_local.yml" : "$root/conf/oauth.yml";
     mount "/oauth" => builder {
