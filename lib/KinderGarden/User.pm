@@ -5,13 +5,14 @@ use Carp;
 use KinderGarden::Basic;
 
 use vars qw/@fields/;
-@fields = qw/id name email visited_at/;
+@fields = qw/id name email signed_at visited_at/;
 
 has 'dbh' => ( is => 'rw', lazy_build => 1 );
 sub _build_dbh { KinderGarden::Basic->dbh }
 
 has [@fields] => ( is => 'rw', isa => 'Str' );
 has 'not_found' => ( is => 'rw', isa => 'Bool' );
+has 'cols' => ( is => 'rw', isa => 'ArrayRef', default => sub { [] } ); # extra cols besides id, name, email
 
 sub BUILD {
     my $self = shift;
@@ -20,9 +21,13 @@ sub BUILD {
     
     return if ($self->id and length $self->name and length $self->email); # ->new from DBI row
     
+    my @cols = @{ $self->cols };
+    unshift @cols, ('id', 'name', 'email');
+    my $cols = join(', ', @cols);
+    
     my $sth; my @binds;
     if ($self->id) {
-        $sth = $dbh->prepare("SELECT * FROM user WHERE id = ?");
+        $sth = $dbh->prepare("SELECT $cols FROM user WHERE id = ?");
         @binds = ($self->id);
     } else {
         # only id is accepeted now

@@ -9,8 +9,9 @@ CREATE TABLE IF NOT EXISTS `user_auth` (
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) DEFAULT 'guest',
-  `email` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
+  `email` varchar(128) DEFAULT NULL,
   `visited_at` int(11) unsigned NOT NULL DEFAULT '0',
+  `signed_at` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
