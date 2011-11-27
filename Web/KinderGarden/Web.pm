@@ -29,14 +29,8 @@ get '/auth' => sub {
         if ($user_id) {
             $dbh->do("UPDATE user_auth SET raw_data = ? WHERE type_id = ? AND identification = ?", undef, to_json($user), $user_auth_type{$auth_provider}, $user->{id});
         } else {
-            ## For Google and if the "verified_email": true, we'll connect the user who own this email
-            if ($auth_provider eq 'Google' and $user->{"verified_email"}) {
-                ($user_id) = $dbh->selectrow_array("SELECT id FROM user WHERE email = ?", undef, $user->{email});
-            }
-            unless ($user_id) { # create user
-                $dbh->do("INSERT INTO user (name, email, visited_at) VALUES (?, ?, ?)", undef, $user->{name}, $user->{email}, time());
-                $user_id = $dbh->{'mysql_insertid'};
-            }
+            $dbh->do("INSERT INTO user (name, email, visited_at) VALUES (?, ?, ?)", undef, $user->{name}, $user->{email}, time());
+            $user_id = $dbh->{'mysql_insertid'};
             $dbh->do("INSERT INTO user_auth (type_id, identification, user_id, raw_data) VALUES (?, ?, ?, ?)", undef, $user_auth_type{$auth_provider}, $user->{id}, $user_id, to_json($user));
         }
         
