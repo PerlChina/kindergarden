@@ -3,6 +3,7 @@ package KinderGarden::App::WhereILive;
 use Mojo::Base 'Mojolicious';
 use KinderGarden::Basic;
 use MojoX::Renderer::Xslate;
+use File::Spec;
 
 # This method will run once at server start
 sub startup {
@@ -24,9 +25,9 @@ sub startup {
     # Xslate Template
     my $template_options = $config->{xslate};
     $template_options->{path} = [ "$root/templates/app/where_i_live", "$root/templates" ];
+    $template_options->{cache_dir} = File::Spec->tmpdir;
     my $xslate = MojoX::Renderer::Xslate->build(
-        # Don't pass mojo so that cachedir goes to tmpdir
-        # mojo => $self,
+        mojo => $self,
         template_options => $template_options
     );
     $self->renderer->add_handler(tt => $xslate);
