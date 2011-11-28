@@ -1,9 +1,10 @@
+[% USE date %]
 
 <div class="row">
     <div class="span6">
     <img src='[% u.gravatar %]' />
     </div>
     <div class="span6">
-        [% u.name %]
+        [% u.name %] (<span class="date">[% date.format(u.visited_at, '%Y-%m-%d %H:%M:%S') %]</span>)
     </div>
 </div>
