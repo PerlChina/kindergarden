@@ -5,17 +5,41 @@ use Dancer ':syntax';
 our $VERSION = '0.1';
 
 use KinderGarden::Basic;
+use KinderGarden::User;
 use KinderGarden::BitMap qw/%user_auth_type/;
 
 # different template dir than default one
 setting 'views'  => path( KinderGarden::Basic->root, 'templates' );
 setting 'public' => path( KinderGarden::Basic->root, 'static' );
 
-get '/' => sub {
-    my $user = session '__user';
-    template 'index', { user => $user }, { layout => undef };;
+hook before_template_render => sub {
+    my $tokens = shift;
+    
+    # merge vars into token b/c I like it more
+    my $vars = delete $tokens->{vars};
+    $tokens = { %$vars, %$tokens } if $vars;
+    # alias user for header
+    $tokens->{user} = $tokens->{session}->{__user} unless exists $tokens->{user};
+    
+    return $tokens;
 };
 
+get '/' => sub {
+    template 'index';
+};
+
+get '/user/:id' => sub {
+    my $id = param('id');
+    
+    my $user = KinderGarden::User->new(id => $id);
+    if ($user->not_found) {
+        var error => "User not found";
+        return template 'index';
+    }
+
+    template 'user', { u => $user };
+};
+    
 get '/auth' => sub {
     my $auth_provider = session '__auth_user_provider';
     my $user = session '__auth_user';

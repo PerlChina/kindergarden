@@ -7,6 +7,6 @@
 
 <ul>
 [% FOREACH u IN users %]
-<li><img src='[% u.gravatar %]?s=30' /> [% u.name %]</li>
+<li><img src='[% u.gravatar %]?s=30' /> <a href='[% u.homepage %]'>[% u.name %]</a></li>
 [% END %]
 </ul>

@@ -23,6 +23,7 @@ sub BUILD {
     
     my @cols = @{ $self->cols };
     unshift @cols, ('id', 'name', 'email');
+    @cols = ('*') if grep { $_ eq '*' } @cols;
     my $cols = join(', ', @cols);
     
     my $sth; my @binds;
@@ -52,6 +53,9 @@ sub _build_gravatar {
     my $self = shift;
     return gravatar_url(email => $self->email);
 }
+
+has 'homepage' => ( is => 'rw', isa => 'Str', lazy_build => 1 );
+sub _build_homepage { return '/user/' . (shift)->id }
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
