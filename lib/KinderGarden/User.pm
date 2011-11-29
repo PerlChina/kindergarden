@@ -10,7 +10,7 @@ use vars qw/@fields/;
 has 'dbh' => ( is => 'rw', lazy_build => 1 );
 sub _build_dbh { KinderGarden::Basic->dbh }
 
-has [@fields] => ( is => 'rw', isa => 'Str' );
+has [@fields] => ( is => 'rw' );
 has 'not_found' => ( is => 'rw', isa => 'Bool' );
 has 'cols' => ( is => 'rw', isa => 'ArrayRef', default => sub { [] } ); # extra cols besides id, name, email
 
@@ -43,7 +43,7 @@ sub BUILD {
     }
     foreach my $fld (keys %$user) {
         next unless grep { $fld eq $_ } @fields;
-        $self->$fld($user->{$fld});
+        $self->$fld($user->{$fld}) if defined $user->{$fld};
     }
 }
 
