@@ -49,6 +49,11 @@ sub _build_data {
     croak $res->status_line unless $res->is_success;
     my $u = $json->decode($res->decoded_content);
 
+    # few fixes
+    if ($provider eq 'GitHub') {
+        $u->{name} ||= $u->{login};
+    }
+    
     return $u;
 }
 
