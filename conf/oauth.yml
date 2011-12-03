@@ -10,10 +10,14 @@ GitHub:
   client_id: 'FIXME'
   client_secret: 'FIXME'
   scope: 'user'
-# we can't get email from twitter API
+# we don't like OAuth 1.0a
 #Twitter:
 #  consumer_key: 'NSO5CStxnJQ2ftz9nEyw'
 #  consumer_secret: 'ZrL10wXNIEOwkb8OAfY4qGkOtWfItFnoMVHXldYzUE'
 WeiBo:
   client_id: 'FIXME'
   client_secret: 'FIXME'
+Live:
+  client_id: 'FIXME'
+  client_secret: 'FIXME'
+  scope: 'wl.basic wl.emails'

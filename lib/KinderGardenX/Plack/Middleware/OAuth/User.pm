@@ -43,6 +43,8 @@ sub _build_data {
         $url = 'https://graph.facebook.com/me?access_token=' . $token;
     } elsif ($provider eq 'WeiBo') {
         $url = 'https://api.weibo.com/2/users/show.json?access_token=' . $token;
+    } elsif ($provider eq 'Live') {
+        $url = 'https://apis.live.net/v5.0/me?access_token=' . $token;
     } else {
         croak "Unknown provider $provider";
     }
@@ -54,6 +56,12 @@ sub _build_data {
     # few fixes
     if ($provider eq 'GitHub') {
         $u->{name} ||= $u->{login};
+    } elsif ($provider eq 'Live') {
+        foreach my $p ("account", "preferred", "personal", "business") {
+            next unless (defined $u->{emails}->{$p} and $u->{emails}->{$p} =~ /\@/);
+            $u->{email} = $u->{emails}->{$p};
+            next;
+        }
     }
     
     return $u;

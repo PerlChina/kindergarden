@@ -11,6 +11,7 @@ use vars qw/@EXPORT_OK %user_auth_type/;
     'Facebook' => 2,
     'GitHub' => 3,
     'WeiBo'  => 4,
+    'Live'   => 5,
 );
 
 1;
