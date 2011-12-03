@@ -21,9 +21,7 @@
         <div class="container">
           <a class="brand" href="/">KinderGarden</a>
           <ul class="nav">
-            [% IF user %]
             <li><a href='/app/whereilive'>Where I Live?</a></li>
-            [% END %]
           </ul>
           <ul class="nav secondary-nav">
             [% IF user %]
