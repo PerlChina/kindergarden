@@ -25,8 +25,8 @@
     </div>
 
     <script src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
-    <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
-    <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-scrollspy.js"></script>
+    <script src="[% config.sites.static %]/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="[% config.sites.static %]/bootstrap/js/bootstrap-scrollspy.js"></script>
     <script src="[% config.sites.static %]/js/jquery.cookie.js"></script>
     
     <script>
