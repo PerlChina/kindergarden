@@ -39,6 +39,9 @@ sub startup {
     $self->hook(around_dispatch => sub {
         my ($next, $c) = @_;
         
+        # for template
+        $c->stash->{config} = KinderGarden::Basic->config;
+        
         my $env  = $c->req->env;
         if ( $env->{'psgix.session'} ) {
             $c->stash->{user} = $env->{'psgix.session'}->{'__user'};
