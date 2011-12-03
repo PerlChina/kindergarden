@@ -41,6 +41,8 @@ sub _build_data {
         $url = 'https://api.github.com/user?access_token=' . $token;
     } elsif ($provider eq 'Facebook') {
         $url = 'https://graph.facebook.com/me?access_token=' . $token;
+    } elsif ($provider eq 'WeiBo') {
+        $url = 'https://api.weibo.com/2/users/show.json?access_token=' . $token;
     } else {
         croak "Unknown provider $provider";
     }
