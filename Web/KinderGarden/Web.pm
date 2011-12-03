@@ -23,6 +23,8 @@ hook before_template_render => sub {
     }
     # alias user for header
     $tokens->{user} = $tokens->{session}->{__user} unless exists $tokens->{user};
+    
+    $tokens->{config} = KinderGarden::Basic->config;
 };
 
 get '/' => sub {

@@ -16,3 +16,6 @@ xslate:
     - 'layout/footer.tt'
   module:
     - KinderGardenX::Text::Xslate::Bridge::KinderGarden
+
+sites:
+  static: /static
