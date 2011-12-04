@@ -42,7 +42,7 @@ sub _build_data {
     } elsif ($provider eq 'Facebook') {
         $url = 'https://graph.facebook.com/me?access_token=' . $token;
     } elsif ($provider eq 'WeiBo') {
-        $url = 'https://api.weibo.com/2/users/show.json?access_token=' . $token;
+        $url = 'https://api.weibo.com/2/users/show.json?access_token=' . $token . '&uid=' . $token->params->{uid};
     } elsif ($provider eq 'Live') {
         $url = 'https://apis.live.net/v5.0/me?access_token=' . $token;
     } else {
