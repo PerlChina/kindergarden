@@ -33,12 +33,17 @@ builder {
     enable_if { ($ENV{KINDERGARDEN_DEBUG} or $_[0]->{REMOTE_ADDR} eq '127.0.0.1') and $^O ne 'MSWin32' } 'Debug::Memory';
     enable_if { $ENV{KINDERGARDEN_DEBUG} or $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } "StackTrace";
     enable_if { $ENV{KINDERGARDEN_DEBUG} or $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } "ConsoleLogger";
+    
     enable 'Session', store => Plack::Session::Store::Cache->new(
         cache => CHI->new(driver => 'FastMmap')
     );
     
-    mount '/static/' => Plack::App::File->new( root => "$root/static" ),
     mount '/favicon.ico' =>  Plack::App::File->new( file => "$root/static/favicon.ico" ),
+    mount '/static/' => Plack::App::File->new( root => "$root/static" ),
+    mount '/static/docs/' => builder {
+        enable 'FileWrap', headers => ["$root/static/docs/header.html"], footers => ["$root/static/docs/footer.html"];
+        Plack::App::File->new( root => "$root/static/docs" )->to_app;
+    },
     
     my $oauth_provider_yml = -e "$root/conf/oauth_local.yml" ? "$root/conf/oauth_local.yml" : "$root/conf/oauth.yml";
     mount "/oauth" => builder {
