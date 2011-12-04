@@ -16,4 +16,5 @@ cpanm CHI;
 cpanm Cache::FastMmap;
 cpanm Plack::Middleware::OAuth;
 cpanm Plack::Middleware::Debug;
+cpanm Plack::Middleware::FileWrap;
 cpanm Gravatar::URL;

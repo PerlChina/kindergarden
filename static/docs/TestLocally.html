@@ -1,42 +1,74 @@
 <h1>Test App on Local Computer/Server</h1>
 
+<div class="alert-message warning span6">
+  <a class="close" href="#"></a>
+  <p>It may be outdated. don't blame if it's not working.</p>
+</div>
+
 <h2>Get Code</h2>
 
 <pre>
-    $ git clone git://github.com/PerlChina/kindergarden.git
-    $ cd kindergarden
-    $ git submodule init
-    $ git submodule update
+$ git clone git://github.com/PerlChina/kindergarden.git
+$ cd kindergarden
+$ git submodule init
+$ git submodule update
 </pre>
 
 <h2>Install modules</h2>
 
-<p>check bin/install.sh</p>
+<pre>
+$ cd bin/install
+$ bash install.sh
+</pre>
+
+<span class="label notice">Notice</span> If Win32,
+<pre>
+> cd bin/install
+> copy install.sh install.bat
+> install.bat
+</pre>
+
+<h2>Install Database</h2>
+
+<pre>
+$ mysql -uXX -p -e "CREATE DATABASE kindergarden;"
+$ mysql -uXX -p kindergarden < sql/db.sql
+</pre>
+
+<p>Fix conf/kindergarden.yml with correct database authentication info.</p>
 
 <h2>Apply OAuth client_id/secret</h2>
 
 <p>Copy conf/oauth.yml to conf/oauth_local.yml and fulfill the id/secret applied from below:</p>
 
-<h3>Google</h3>
+<ul>
 
-<a href='https://code.google.com/apis/console#access'>https://code.google.com/apis/console#access</a>
+    <li>
+    <p><b>Google</b></p>
+    <p><a href='https://code.google.com/apis/console#access'>https://code.google.com/apis/console#access</a></p>
+    <p><span class="label important">Important</span> you can put the http://localhost:5000/oauth/google/callback into <b>Redirect URIs</b>.</p>
+    </li>
 
-<p>Note: you can put the http://localhost:5000/oauth/google/callback into <b>Redirect URIs</b>.</p>
+    <li>
+    <p><b>GitHub</b></p>
+    <p><a href='https://github.com/account/applications/new'>https://github.com/account/applications/new</a></p>
+    </li>
 
-<h3>GitHub</h3>
+    <li>
+    <p><b>Facebook</b></p>
+    <p><a href='http://www.facebook.com/developers/?fa=1' target='_blank'>http://www.facebook.com/developers/?fa=1</a></p>
+    </li>
 
-<a href='https://github.com/account/applications/new'>https://github.com/account/applications/new</a>
-
-<h3>Facebook</h3>
-
-<a href='http://www.facebook.com/developers/?fa=1' target='_blank'>http://www.facebook.com/developers/?fa=1</a>
-
-<h3>Live</h3>
-
-<a href='https://manage.dev.live.com/AddApplication.aspx'>https://manage.dev.live.com/AddApplication.aspx</a>
+    <li>
+    <p><b>Live</b></p>
+    <p><a href='https://manage.dev.live.com/AddApplication.aspx'>https://manage.dev.live.com/AddApplication.aspx</a></p>
+    </li>
+</ul>
 
 <h2>Run with Plack</h2>
 
-<p>$ plackup</p>
+<pre>
+$ plackup
+</pre>
 
 <p>to test it locally</p>
