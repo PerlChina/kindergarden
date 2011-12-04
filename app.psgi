@@ -26,8 +26,9 @@ use lib "$Bin/Apps";
 my $root = KinderGarden::Basic->root;
 
 builder {
-    enable "StackTrace";
-    enable "ConsoleLogger";
+    enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } 'Debug', panels => [ qw(DBITrace Memory Timer) ];
+    enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } "StackTrace";
+    enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } "ConsoleLogger";
     enable 'Session', store => Plack::Session::Store::Cache->new(
         cache => CHI->new(driver => 'FastMmap')
     );
