@@ -26,7 +26,8 @@ use lib "$Bin/Apps";
 my $root = KinderGarden::Basic->root;
 
 builder {
-    enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } 'Debug', panels => [ qw(DBITrace Memory Timer) ];
+    enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } 'Debug', panels => [ qw(DBITrace Timer) ];
+    enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1' and $^O ne 'MSWin32' } 'Debug::Memory';
     enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } "StackTrace";
     enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } "ConsoleLogger";
     enable 'Session', store => Plack::Session::Store::Cache->new(
