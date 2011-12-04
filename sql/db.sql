@@ -29,3 +29,15 @@ CREATE TABLE IF NOT EXISTS `app_wil_user_place` (
   `inserted_at` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`,`place_id`)
 );
+
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `obj_hash` char(32) NOT NULL,
+  `user_id` int(11) unsigned NOT NULL,
+  `text` text DEFAULT NULL,
+  `inserted_at` int(11) unsigned NOT NULL,
+  `path` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `obj_hash` (`obj_hash`),
+  KEY `path` (`path`)
+);

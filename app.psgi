@@ -72,32 +72,48 @@ builder {
     },
     
     mount '/app/whereilive' => sub {
-        lib->import("$root/lib");
-        lib->import("$root/Apps");
-        
-        my $psgi = Mojo::Server::PSGI->new(app_class => 'KinderGarden::App::WhereILive');
-        $psgi->run(@_)
+        _mojo_wrap('KinderGarden::App::WhereILive', @_);
+    },
+    
+    mount '/comment' => sub {
+        my $env = shift;
+        _dance_wrap('KinderGarden::Comment', $env);
     },
     
     mount '/' => sub {
         my $env = shift;
-        
-        lib->import("$root/lib");
-        lib->import("$root/Web");
-        
-        local $ENV{DANCER_APPDIR}  = "$root/Web";
-        local $ENV{DANCER_CONFDIR} = "$root/Web";
-        load_app "KinderGarden::Web";
-        Dancer::App->set_running_app('KinderGarden::Web');
-        setting appdir  => "$root/Web";
-        setting confdir => "$root/Web";
-        Dancer::Config->load;
-        
-        # damn, how many fixes should I write it here!
-        setting 'views'  => "$root/templates";
-        setting 'public' => "$root/static";
-        
-        my $request = Dancer::Request->new( env => $env );
-        Dancer->dance($request);
+        _dance_wrap('KinderGarden::Web', $env);
     },
 };
+
+sub _dance_wrap {
+    my $app = shift;
+    my $env = shift;
+    
+    lib->import("$root/lib");
+    lib->import("$root/Web");
+    
+    local $ENV{DANCER_APPDIR}  = "$root/Web";
+    local $ENV{DANCER_CONFDIR} = "$root/Web";
+    load_app $app;
+    Dancer::App->set_running_app($app);
+    setting appdir  => "$root/Web";
+    setting confdir => "$root/Web";
+    Dancer::Config->load;
+    
+    # damn, how many fixes should I write it here!
+    setting 'views'  => "$root/templates";
+    setting 'public' => "$root/static";
+    
+    my $request = Dancer::Request->new( env => $env );
+    Dancer->dance($request);
+}
+
+sub _mojo_wrap {
+    my $app = shift;
+    
+    lib->import("$root/lib");
+    lib->import("$root/Apps");
+    my $psgi = Mojo::Server::PSGI->new(app_class => $app);
+    $psgi->run(@_);
+}

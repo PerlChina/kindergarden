@@ -1,4 +1,3 @@
-appname: "KinderGarden::Web"
 charset: "UTF-8"
 template: xslate
 engines:
