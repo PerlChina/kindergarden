@@ -12,7 +12,7 @@ use CHI;
 ## OAuth
 use lib "$Bin/lib";
 use KinderGarden::Basic;
-use KinderGardenX::Plack::Middleware::OAuth::User;
+use KinderGarden::OAuth;
 
 ## KinderGarden-Web
 use lib "$Bin/Web";
@@ -51,22 +51,11 @@ builder {
         enable 'OAuth', 
             on_success => sub {
                 my ( $self, $token ) = @_;
-
-                my $u = KinderGardenX::Plack::Middleware::OAuth::User->new( config => $self->config, token => $token );
-
-                if ($u) {
-                    my $session = Plack::Session->new($self->env);
-                    $session->set('__auth_user_provider', $token->provider);
-                    $session->set('__auth_user', $u->data);
-                }
-                my $res = Plack::Response->new(301);
-                $res->redirect('/auth');
-                return $res->finalize;
+                KinderGarden::OAuth->new( status => 'success', handler => $self, token => $token )->response;
             },
             on_error => sub {
-                my $res = Plack::Response->new(301);
-                $res->redirect('/auth');
-                return $res->finalize;
+                my ( $self, $token ) = @_;
+                KinderGarden::OAuth->new( status => 'error', handler => $self, token => $token )->response;
             },
             providers => $oauth_provider_yml;
     },
