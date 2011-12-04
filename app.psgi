@@ -41,7 +41,8 @@ builder {
     mount '/favicon.ico' =>  Plack::App::File->new( file => "$root/static/favicon.ico" ),
     mount '/static/' => Plack::App::File->new( root => "$root/static" ),
     mount '/static/docs/' => builder {
-        enable 'FileWrap', headers => ["$root/static/docs/header.html"], footers => ["$root/static/docs/footer.html"];
+        enable_if { $_[0]->{PATH_INFO} =~ /\.html/ } 'FileWrap',
+            headers => ["$root/static/docs/header.html"], footers => ["$root/static/docs/footer.html"];
         Plack::App::File->new( root => "$root/static/docs" )->to_app;
     },
     
