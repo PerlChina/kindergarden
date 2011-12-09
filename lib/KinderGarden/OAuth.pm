@@ -29,6 +29,8 @@ sub BUILD {
         if ($user) {
             croak 'Provider: ' . $token->provider . ' bitmap fail' unless exists $user_auth_type{$token->provider};
             
+            my $json = JSON::Any->new;
+            
             my $dbh = KinderGarden::Basic->dbh;
             my $user_auth_type = $user_auth_type{$token->provider};
             
@@ -36,11 +38,11 @@ sub BUILD {
             my ($user_id) = $dbh->selectrow_array("SELECT user_id FROM user_auth WHERE type_id = ? AND identification = ?", undef, $user_auth_type, $user->{id});
             if ($user_id) {
                 $dbh->do("UPDATE user SET visited_at = ? WHERE id = ?", undef, time(), $user_id);
-                $dbh->do("UPDATE user_auth SET raw_data = ? WHERE type_id = ? AND identification = ?", undef, to_json($user), $user_auth_type, $user->{id});
+                $dbh->do("UPDATE user_auth SET raw_data = ? WHERE type_id = ? AND identification = ?", undef, $json->encode($user), $user_auth_type, $user->{id});
             } else {
                 $dbh->do("INSERT INTO user (name, email, signed_at, visited_at) VALUES (?, ?, ?, ?)", undef, $user->{name}, $user->{email}, time(), time());
                 $user_id = $dbh->{'mysql_insertid'};
-                $dbh->do("INSERT INTO user_auth (type_id, identification, user_id, raw_data) VALUES (?, ?, ?, ?)", undef, $user_auth_type, $user->{id}, $user_id, to_json($user));
+                $dbh->do("INSERT INTO user_auth (type_id, identification, user_id, raw_data) VALUES (?, ?, ?, ?)", undef, $user_auth_type, $user->{id}, $user_id, $json->encode($user));
             }
             if ($user_id) {
                 my $user = $dbh->selectrow_hashref("SELECT * FROM user WHERE id = ?", undef, $user_id);
