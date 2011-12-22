@@ -27,7 +27,7 @@ use DBIx::Connector;
 has 'conn' => ( is => 'ro', lazy_build => 1 );
 sub _build_conn {
     my $self = shift;
-    return DBIx::Connector->( @{ $self->config->{DBI} } );
+    return DBIx::Connector->new( @{ $self->config->{DBI} } );
 }
 has 'dbh' => (is => 'ro', lazy_build => 1);
 sub _build_dbh {
