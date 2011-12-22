@@ -23,10 +23,16 @@ sub _build_config {
 }
 
 use DBI; use Carp;
+use DBIx::Connector;
+has 'conn' => ( is => 'ro', lazy_build => 1 );
+sub _build_conn {
+    my $self = shift;
+    return DBIx::Connector->( @{ $self->config->{DBI} } );
+}
 has 'dbh' => (is => 'ro', lazy_build => 1);
 sub _build_dbh {
     my $self = shift;
-    my $dbh = DBI->connect( @{ $self->config->{DBI} } ) or croak $DBI::errstr;
+    my $dbh = $self->conn->dbh or croak $DBI::errstr;
     $dbh->{mysql_enable_utf8} = 1; $dbh->do("set names 'utf8';");
     return $dbh;
 }
