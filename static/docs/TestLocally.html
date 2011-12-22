@@ -17,15 +17,9 @@ $ git submodule update
 <h2>Install modules</h2>
 
 <pre>
-$ cd bin/install
-$ bash install.sh
-</pre>
-
-<span class="label notice">Notice</span> If Win32,
-<pre>
-> cd bin/install
-> copy install.sh install.bat
-> install.bat
+$ cpan App::cpanminus
+$ cpanm Dist::Zilla
+$ dzil listdeps --missing | cpanm
 </pre>
 
 <h2>Install Database</h2>

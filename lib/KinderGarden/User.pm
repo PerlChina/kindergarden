@@ -1,5 +1,7 @@
 package KinderGarden::User;
 
+# ABSTRACT: KinderGarden User
+
 use Moose;
 use Carp;
 use KinderGarden::Basic;
