@@ -16,7 +16,7 @@ has 'token'    => (is => 'ro', isa => 'Plack::Middleware::OAuth::AccessToken');
 # callback of Plack::Middleware::OAuth
 sub BUILD {
     my $self = shift;
-    
+
     my $handler = $self->handler;
     my $token   = $self->token;
     my $status  = $self->status;
@@ -28,12 +28,12 @@ sub BUILD {
         my $user = $self->get_user;
         if ($user) {
             croak 'Provider: ' . $token->provider . ' bitmap fail' unless exists $user_auth_type{$token->provider};
-            
+
             my $json = JSON::Any->new;
-            
+
             my $dbh = KinderGarden::Basic->dbh;
             my $user_auth_type = $user_auth_type{$token->provider};
-            
+
             ## check if we have id binded
             my ($user_id) = $dbh->selectrow_array("SELECT user_id FROM user_auth WHERE type_id = ? AND identification = ?", undef, $user_auth_type, $user->{id});
             if ($user_id) {
@@ -67,7 +67,7 @@ sub get_user {
     my $provider = $self->token->provider;
 
 =pod
-    
+
     # twitter is commented b/c we can't get the email
     if ($provider eq 'Twitter') { # fallback to Net::Twitter
         require Net::Twitter;
@@ -82,7 +82,7 @@ sub get_user {
     }
 
 =cut
-    
+
     my $url;
     if ($provider eq 'Google') {
         $url = 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=' . $token;
@@ -97,7 +97,7 @@ sub get_user {
     } else {
         croak "Unknown provider $provider";
     }
-    
+
     my $res = $ua->get($url);
     croak $res->status_line unless $res->is_success;
     my $u = $json->decode($res->decoded_content);
@@ -109,10 +109,10 @@ sub get_user {
         foreach my $p ("account", "preferred", "personal", "business") {
             next unless (defined $u->{emails}->{$p} and $u->{emails}->{$p} =~ /\@/);
             $u->{email} = $u->{emails}->{$p};
-            next;
+            last;
         }
     }
-    
+
     return $u;
 }
 
